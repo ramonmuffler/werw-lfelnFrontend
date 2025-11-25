@@ -10,9 +10,10 @@ import CardsView from "./pages/CardsView";
 import TableView from "./pages/TableView";
 import CarouselView from "./pages/CarouselView";
 import Search from "./pages/Search";
-import Home from "./pages/Home";
+import Home from "./wpages/Home.jsx";
 import PersonsPage from "./pages/PersonsPage";
 import CreateLobby from "./wpages/CreateLobby.js";
+import GameSetup from "./wpages/GameSetup.js";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -111,6 +112,10 @@ function App() {
         <Route
             path="/create-lobby"
             element={<CreateLobby />}
+        />
+        <Route
+            path="/game-setup"
+            element={<GameSetup />}
         />
       </Routes>
     </>

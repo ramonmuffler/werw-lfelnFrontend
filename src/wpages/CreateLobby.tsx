@@ -7,10 +7,11 @@ import {StartGameWizard} from "../wcomponents/lobby/StartGameWizard";
 import {useNavigate} from "react-router-dom";
 
 export type LobbyInfo = {
-    createdAt: Date;
     players: string[];
     werewolfCount: 1 | 2;
+    createdAt: Date;
 };
+
 
 export type LobbyProps = {
     onLobbyCreated?: (info: LobbyInfo) => void;
@@ -49,7 +50,7 @@ const Lobby: React.FC<LobbyProps> = ({ onLobbyCreated }) => {
         if (onLobbyCreated) {
             onLobbyCreated(info); // Parent kann hier direkt auf <Game /> wechseln
         }
-        navigate("/game", { state: info });
+        navigate("/game-setup", { state: info });
     };
 
     const handleCancelWizard = () => {
