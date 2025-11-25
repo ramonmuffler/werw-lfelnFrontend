@@ -12,6 +12,7 @@ import CarouselView from "./pages/CarouselView";
 import Search from "./pages/Search";
 import Home from "./pages/Home";
 import PersonsPage from "./pages/PersonsPage";
+import CreateLobby from "./wpages/CreateLobby.js";
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -55,6 +56,9 @@ function App() {
       <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand>TodoApp</Navbar.Brand>
+          <Nav>
+            <LinkContainer to="/create-lobby"><Nav.Link>create Lobby</Nav.Link></LinkContainer>
+          </Nav>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
@@ -102,6 +106,11 @@ function App() {
         <Route
           path="/persons"
           element={<PersonsPage />}
+        />
+        {/* Werwölfeln Pages */}
+        <Route
+            path="/create-lobby"
+            element={<CreateLobby />}
         />
       </Routes>
     </>
