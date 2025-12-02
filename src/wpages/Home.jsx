@@ -1,7 +1,6 @@
 export default function Home() {
     return (
-        <div className="min-vh-100 d-flex align-items-center bg-dark text-light"
-             style={{ height: "100vh", overflow: "hidden" }}>
+        <div className="min-vh-100 d-flex align-items-center text-light">
             <div className="container py-5">
                 {/* Hero Section */}
                 <div className="row mb-5">
@@ -15,9 +14,12 @@ export default function Home() {
                             tremble as night falls.
                         </p>
                         <div className="mt-4 d-flex flex-wrap gap-3">
-                            <button className="btn btn-danger btn-lg">
-                                Create New Lobby
-                            </button>
+                            <a href="/lobby-online" className="btn btn-danger btn-lg">
+                                Create / Join Lobby
+                            </a>
+                            <a href="/leaderboard" className="btn btn-outline-light btn-lg">
+                                View Leaderboard
+                            </a>
                         </div>
                     </div>
 

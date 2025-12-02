@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
-import axios from "axios";
+import { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { AuthProvider, useAuth } from "./auth/AuthContext.jsx";
 
 // Pages
 import ListGroupView from "./pages/ListGroupView";
@@ -11,115 +11,94 @@ import TableView from "./pages/TableView";
 import CarouselView from "./pages/CarouselView";
 import Search from "./pages/Search";
 import Home from "./wpages/Home.jsx";
+import AuthPage from "./wpages/AuthPage.jsx";
+import LeaderboardPage from "./wpages/LeaderboardPage.jsx";
+import LobbyOnline from "./wpages/LobbyOnline.jsx";
+import GameOnline from "./wpages/GameOnline.jsx";
 import PersonsPage from "./pages/PersonsPage";
 import CreateLobby from "./wpages/CreateLobby.js";
 import GameSetup from "./wpages/GameSetup.js";
 
-function App() {
-  const [todos, setTodos] = useState([]);
+function AppShell() {
+  const { user, logout } = useAuth();
 
-  // Fetch todos from backend
-  const fetchTodos = () => {
-    axios.get("http://localhost:8080/api/todos")
-      .then(res => setTodos(res.data))
-      .catch(err => console.error(err));
-  };
+  // For responsive nav, track mobile menu open
+  const [navOpen, setNavOpen] = useState(false);
 
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  // Add new todo
-  const addTodo = (title) => {
-    axios.post("http://localhost:8080/api/todos", { title, completed: false })
-      .then(fetchTodos)
-      .catch(err => console.error(err));
-  };
-
-  // Toggle completed
-  const toggleTodo = (id, completed) => {
-    const todo = todos.find(t => t.id === id);
-    axios.put(`http://localhost:8080/api/todos/${id}`, { title: todo.title, completed: !completed })
-      .then(fetchTodos)
-      .catch(err => console.error(err));
-  };
-
-  // Delete todo
-  const deleteTodo = (id) => {
-    axios.delete(`http://localhost:8080/api/todos/${id}`)
-      .then(fetchTodos)
-      .catch(err => console.error(err));
-  };
+  // Optional: Implement tracking which lobby the user is in/running game, etc. For now: just basic nav.
 
   return (
     <>
-      {/* Navbar */}
-      <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand>TodoApp</Navbar.Brand>
-          <Nav>
-            <LinkContainer to="/create-lobby"><Nav.Link>create Lobby</Nav.Link></LinkContainer>
-          </Nav>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <LinkContainer to="/"><Nav.Link>Home</Nav.Link></LinkContainer>
-              <LinkContainer to="/listgroup"><Nav.Link>List Group</Nav.Link></LinkContainer>
-              <LinkContainer to="/cards"><Nav.Link>Cards</Nav.Link></LinkContainer>
-              <LinkContainer to="/table"><Nav.Link>Table</Nav.Link></LinkContainer>
-              <LinkContainer to="/carousel"><Nav.Link>Carousel</Nav.Link></LinkContainer>
-              <LinkContainer to="/search"><Nav.Link>Search</Nav.Link></LinkContainer>
-              <LinkContainer to="/persons"><Nav.Link>Persons</Nav.Link></LinkContainer>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-
-        <Route
-          path="/listgroup"
-          element={<ListGroupView todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />}
-        />
-        <Route
-          path="/cards"
-          element={<CardsView todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />}
-        />
-        <Route
-          path="/table"
-          element={<TableView todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />}
-        />
-        <Route
-          path="/carousel"
-          element={<CarouselView todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />}
-        />
-        <Route
-          path="/search"
-          element={<Search />}
-        />
-        {/* Default route */}
-        <Route
-          path="/"
-          element={<ListGroupView todos={todos} addTodo={addTodo} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />}
-        />
-        <Route
-          path="/persons"
-          element={<PersonsPage />}
-        />
-        {/* Werwölfeln Pages */}
-        <Route
-            path="/create-lobby"
-            element={<CreateLobby />}
-        />
-        <Route
-            path="/game-setup"
-            element={<GameSetup />}
-        />
-      </Routes>
+      <div className="app-shell">
+        {/* Sticky Navbar */}
+        <Navbar expand="lg" className="navbar-dark-red" variant="dark" sticky="top" style={{ background: '#0a0a0a' }}>
+          <Container>
+            <Navbar.Brand as={Link} to="/">
+              <span className="navbar-brand-title" style={{ color: '#fff', textShadow: '0 1px 8px #fff5' }}>WEREWOLVES</span>{' '}
+              <span className="navbar-brand-pill">ONLINE</span>
+            </Navbar.Brand>
+            <Navbar.Toggle aria-controls="main-navbar" onClick={() => setNavOpen(!navOpen)} />
+            <Navbar.Collapse id="main-navbar" in={navOpen}>
+              <Nav className="me-auto">
+                <LinkContainer to="/">
+                  <Nav.Link>Home</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/lobby-online">
+                  <Nav.Link>Lobby</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/leaderboard">
+                  <Nav.Link>Leaderboard</Nav.Link>
+                </LinkContainer>
+              </Nav>
+              <Nav className="ms-auto align-items-center">
+                {user ? (
+                  <>
+                    <Nav.Item className="me-2 text-light small">
+                      <span style={{fontWeight:600}}>&#128100; {user.username}</span>
+                    </Nav.Item>
+                    <Nav.Link as="button" onClick={logout} style={{borderRadius:"999px"}}>
+                      Logout
+                    </Nav.Link>
+                  </>
+                ) : (
+                  <LinkContainer to="/auth">
+                    <Nav.Link>Login / Register</Nav.Link>
+                  </LinkContainer>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+        {/* Seite */}
+        <div className="page-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/lobby-online" element={<LobbyOnline />} />
+            <Route path="/game-online/:code" element={<GameOnline />} />
+            <Route path="/persons" element={<PersonsPage />} />
+            {/* evtl. weitere Seiten */}
+            {/* Beispiel-Layout alt: */}
+            <Route path="/listgroup" element={<ListGroupView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
+            <Route path="/cards" element={<CardsView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
+            <Route path="/table" element={<TableView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
+            <Route path="/carousel" element={<CarouselView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
+            <Route path="/search" element={<Search />} />
+            {/* Prototyp-Local Werwölfe: */}
+            <Route path="/create-lobby" element={<CreateLobby />} />
+            <Route path="/game-setup" element={<GameSetup />} />
+          </Routes>
+        </div>
+      </div>
     </>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppShell />
+    </AuthProvider>
+  );
+}
