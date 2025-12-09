@@ -18,6 +18,7 @@ import GameOnline from "./wpages/GameOnline.jsx";
 import PersonsPage from "./pages/PersonsPage";
 import CreateLobby from "./wpages/CreateLobby.js";
 import GameSetup from "./wpages/GameSetup.js";
+import WerewolfGame from "./pages/WerewolfGame.jsx";
 
 function AppShell() {
   const { user, logout } = useAuth();
@@ -77,6 +78,7 @@ function AppShell() {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/lobby-online" element={<LobbyOnline />} />
             <Route path="/game-online/:code" element={<GameOnline />} />
+            <Route path="/game/:code" element={<WerewolfGame />} />
             <Route path="/persons" element={<PersonsPage />} />
             {/* evtl. weitere Seiten */}
             {/* Beispiel-Layout alt: */}
