@@ -23,9 +23,9 @@ export default function GameOnline() {
     const [loadingLobby, setLoadingLobby] = useState(false);
     const [loadingChat, setLoadingChat] = useState(false);
 
-    const resetError = () => setError("");
-
     const chatBoxRef = useRef(null);
+
+    const resetError = () => setError("");
 
     const formatRole = (role) => {
         if (!role) return "unknown role";
@@ -102,6 +102,13 @@ export default function GameOnline() {
         }
     }, [messages]);
 
+    // 🔁 WICHTIG: Auto-Redirect für ALLE Spieler, wenn das Spiel gestartet wurde
+    useEffect(() => {
+        if (lobby?.status === "IN_GAME") {
+            navigate(`/game/${code}`);
+        }
+    }, [lobby, code, navigate]);
+
     const sendMessage = async (e) => {
         e.preventDefault();
         if (!chatText.trim() || !user || !code) return;
@@ -141,10 +148,7 @@ export default function GameOnline() {
         }
     };
 
-    // Robuste Host-Erkennung:
-    // - hostUserId vom Lobby-Objekt
-    // - oder me.isHost
-    // - oder Spieler in lobby.players mit isHost=true und eigener id
+    // Robuste Host-Erkennung
     const isHost =
         !!(
             (lobby && user && lobby.hostUserId === user.id) ||
@@ -155,21 +159,22 @@ export default function GameOnline() {
                 lobby.players.some((p) => p.id === user.id && p.isHost))
         ) && !!lobby;
 
-    // Spiel starten (nur Frontend → Wechselt in die Spiel-Komponente)
+    // Spiel starten (Host) -> setzt Status auf IN_GAME
     const startGame = async () => {
-        if (!code) return;
+        if (!code || !user) return;
 
         try {
             resetError();
 
-            // Optionaler Backend-Call, wenn du Lobby-Status setzen willst
-            /*
-            await api.post(`/lobbies/${code}/start`, { userId: user.id });
-            */
+            await api.post(`/lobbies/${code}/start`, {
+                userId: user.id,
+            });
 
-            navigate(`/game/${code}`);
+            // WICHTIG: kein navigate hier.
+            // Alle Clients werden durch das Lobby-Polling + useEffect oben
+            // automatisch weitergeleitet, sobald status === "IN_GAME" ist.
         } catch (e) {
-            setError(e.response?.data?.error || "Could not start game.");
+            setError(e?.response?.data?.error || "Could not start game.");
         }
     };
 
@@ -276,10 +281,11 @@ export default function GameOnline() {
                                         ))}
                                     </ul>
 
-                                    {/* Start-Button: Host + mind. 5 Spieler */}
+                                    {/* Start-Button: Host + mind. 5 Spieler + nicht bereits im Game */}
                                     {isHost &&
                                         Array.isArray(lobby.players) &&
-                                        lobby.players.length >= 5 && (
+                                        lobby.players.length >= 5 &&
+                                        lobby.status !== "IN_GAME" && (
                                             <div className="mt-3 d-flex justify-content-end">
                                                 <button
                                                     type="button"
