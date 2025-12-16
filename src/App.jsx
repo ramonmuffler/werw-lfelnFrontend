@@ -5,11 +5,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { AuthProvider, useAuth } from "./auth/AuthContext.jsx";
 
 // Pages
-import ListGroupView from "./pages/ListGroupView";
-import CardsView from "./pages/CardsView";
-import TableView from "./pages/TableView";
-import CarouselView from "./pages/CarouselView";
-import Search from "./pages/Search";
 import Home from "./wpages/Home.jsx";
 import AuthPage from "./wpages/AuthPage.jsx";
 import LeaderboardPage from "./wpages/LeaderboardPage.jsx";
@@ -81,12 +76,6 @@ function AppShell() {
             <Route path="/game/:code" element={<WerewolfGame />} />
             <Route path="/persons" element={<PersonsPage />} />
             {/* evtl. weitere Seiten */}
-            {/* Beispiel-Layout alt: */}
-            <Route path="/listgroup" element={<ListGroupView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
-            <Route path="/cards" element={<CardsView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
-            <Route path="/table" element={<TableView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
-            <Route path="/carousel" element={<CarouselView todos={[]} addTodo={()=>{}} toggleTodo={()=>{}} deleteTodo={()=>{}}/>} />
-            <Route path="/search" element={<Search />} />
             {/* Prototyp-Local Werwölfe: */}
             <Route path="/create-lobby" element={<CreateLobby />} />
             <Route path="/game-setup" element={<GameSetup />} />
