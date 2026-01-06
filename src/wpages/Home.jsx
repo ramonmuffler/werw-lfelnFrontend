@@ -1,6 +1,6 @@
 export default function Home() {
     return (
-        <div className="min-vh-100 d-flex align-items-center text-light">
+        <div className="min-vh-100 d-flex align-items-center text-light bg-dark ">
             <div className="container py-5">
                 {/* Hero Section */}
                 <div className="row mb-5">
@@ -8,7 +8,7 @@ export default function Home() {
                         <h1 className="display-4 fw-bold mb-3">
                             Werewolves <span className="text-danger">Online</span>
                         </h1>
-                        <p className="lead text-secondary">
+                        <p className="lead text-light">
                             The classic party game <span className="text-light">“Werewolves”</span> – now as a
                             web experience. Create a lobby, share the code with your friends, and let the village
                             tremble as night falls.
@@ -33,7 +33,7 @@ export default function Home() {
                         >
                             <div className="card-body p-4">
                                 <h2 className="h4 text-danger mb-3">Night Over the Village</h2>
-                                <p className="mb-2">
+                                <p className="mb-2 text-light">
                                     Each round shifts between <strong>Night</strong> and{" "}
                                     <strong>Day</strong>.
                                 </p>
@@ -57,7 +57,7 @@ export default function Home() {
                         <div className="card bg-dark border border-danger-subtle h-100 shadow-sm">
                             <div className="card-body">
                                 <h3 className="h5 text-danger">Werewolves</h3>
-                                <p className="small text-secondary mb-0">
+                                <p className="small text-light mb-0">
                                     They know each other and pick a victim every night.
                                     Goal: Eliminate all villagers without getting exposed.
                                 </p>
@@ -69,7 +69,7 @@ export default function Home() {
                         <div className="card bg-dark border border-info h-100 shadow-sm">
                             <div className="card-body">
                                 <h3 className="h5 text-info">Seer</h3>
-                                <p className="small text-secondary mb-0">
+                                <p className="small text-light mb-0">
                                     Each night, the Seer can “inspect” a player and learn whether they’re a werewolf —
                                     without revealing their identity.
                                 </p>
@@ -81,7 +81,7 @@ export default function Home() {
                         <div className="card bg-dark border border-warning h-100 shadow-sm">
                             <div className="card-body">
                                 <h3 className="h5 text-warning">Hunter</h3>
-                                <p className="small text-secondary mb-0">
+                                <p className="small text-light mb-0">
                                     If the Hunter dies, they may take one last shot and eliminate any player of their choice.
                                 </p>
                             </div>
@@ -92,7 +92,7 @@ export default function Home() {
                         <div className="card bg-dark border border-secondary h-100 shadow-sm">
                             <div className="card-body">
                                 <h3 className="h5 text-light">Villagers</h3>
-                                <p className="small text-secondary mb-0">
+                                <p className="small text-light mb-0">
                                     No special abilities — but the most important skill: logic.
                                     Observe, discuss, trust… or don’t.
                                 </p>

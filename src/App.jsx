@@ -10,7 +10,6 @@ import AuthPage from "./wpages/AuthPage.jsx";
 import LeaderboardPage from "./wpages/LeaderboardPage.jsx";
 import LobbyOnline from "./wpages/LobbyOnline.jsx";
 import GameOnline from "./wpages/GameOnline.jsx";
-import PersonsPage from "./pages/PersonsPage";
 import CreateLobby from "./wpages/CreateLobby.js";
 import GameSetup from "./wpages/GameSetup.js";
 import WerewolfGame from "./pages/WerewolfGame.jsx";
@@ -74,7 +73,6 @@ function AppShell() {
             <Route path="/lobby-online" element={<LobbyOnline />} />
             <Route path="/game-online/:code" element={<GameOnline />} />
             <Route path="/game/:code" element={<WerewolfGame />} />
-            <Route path="/persons" element={<PersonsPage />} />
             {/* evtl. weitere Seiten */}
             {/* Prototyp-Local Werwölfe: */}
             <Route path="/create-lobby" element={<CreateLobby />} />
